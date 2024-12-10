@@ -20,13 +20,13 @@ function Login() {
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100">
       <div className="w-96 rounded-lg bg-white p-6 text-center shadow-lg">
-        <h2 className="mb-4 text-2xl">Login with Google</h2>
+        <h2 className="mb-4 text-2xl">Realize seu Login</h2>
         {error && <p className="mb-2 text-sm text-red-500">{error}</p>}
         <button
           onClick={handleLogin}
           className="w-full rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
         >
-          Sign in with Google
+          Realize seu Login
         </button>
       </div>
     </div>
