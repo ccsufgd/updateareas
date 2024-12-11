@@ -18,15 +18,20 @@ function Login() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
-      <div className="w-96 rounded-lg bg-white p-6 text-center shadow-lg">
-        <h2 className="mb-4 text-2xl">Realize seu Login</h2>
+    <div className="flex h-screen items-center justify-center bg-black">
+      <div className="flex w-96 flex-col items-center rounded-xl bg-gray-600 p-6 shadow-lg">
+        <img
+          src="https://ccsufgd.github.io/menu/CS-negativo.png"
+          alt="Logo"
+          className="mb-8 h-auto w-52 rounded-full object-contain"
+        />
+
         {error && <p className="mb-2 text-sm text-red-500">{error}</p>}
         <button
           onClick={handleLogin}
-          className="w-full rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
+          className="w-full rounded-lg bg-blue-500 p-3 text-lg font-semibold text-white transition duration-300 hover:bg-blue-600"
         >
-          Realize seu Login
+          Login
         </button>
       </div>
     </div>
