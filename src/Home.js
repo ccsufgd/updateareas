@@ -404,7 +404,7 @@ function Home() {
                         onClick={() =>
                           index > 0 && handleReorder(index, index - 1)
                         }
-                        className={`rounded px-4 py-2 text-white ${index === 0 ? 'cursor-not-allowed bg-gray-500' : 'bg-blue-500'}`}
+                        className="rounded bg-blue-500 px-4 py-2 text-white"
                         disabled={index === 0}
                       >
                         <ChevronUp className="h-5 w-5" />
@@ -414,11 +414,7 @@ function Home() {
                           index < areasData[selectedProcesso].length - 1 &&
                           handleReorder(index, index + 1)
                         }
-                        className={`rounded px-4 py-2 text-white ${
-                          index === areasData[selectedProcesso].length - 1
-                            ? 'cursor-not-allowed bg-gray-500'
-                            : 'bg-green-500'
-                        }`}
+                        className="rounded bg-green-500 px-4 py-2 text-white"
                         disabled={
                           index === areasData[selectedProcesso].length - 1
                         }

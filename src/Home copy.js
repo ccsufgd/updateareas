@@ -3,6 +3,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { db } from './firebase';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
+import { ChevronUp, ChevronDown, Pencil, Trash2 } from 'lucide-react';
 import {
   getFirestore,
   collection,
@@ -217,12 +218,33 @@ function Home() {
   };
 
   const formRef = useRef(null);
+  /*CARDS ATUALIZAR ORDEM*/
+  const handleReorder = async (fromIndex, toIndex) => {
+    if (!selectedProcesso) return;
 
+    // Atualiza a ordem no estado local
+    const updatedAreas = [...areasData[selectedProcesso]];
+    const [movedItem] = updatedAreas.splice(fromIndex, 1);
+    updatedAreas.splice(toIndex, 0, movedItem);
+
+    // Atualiza no Firestore
+    const processoRef = doc(db, 'processos', selectedProcesso); // Referência ao processo selecionado
+
+    try {
+      await setDoc(processoRef, { areas: updatedAreas }, { merge: true });
+      // Atualiza o estado local com os dados reordenados
+      setAreasData((prevData) => ({
+        ...prevData,
+        [selectedProcesso]: updatedAreas,
+      }));
+    } catch (error) {
+      console.error('Erro ao atualizar ordem:', error);
+      alert('Erro ao atualizar ordem!');
+    }
+  };
   return (
     <div>
       <div className="text-center">
-        <h2 className="mb-4 text-3xl">{user ? user.displayName : 'User'}</h2>
-        <p>Email: {user ? user.email : 'Loading...'}</p>
         <div className="mt-4 flex justify-center">
           <img
             src={user ? user.photoURL : ''}
@@ -230,6 +252,9 @@ function Home() {
             className="mt-4 h-32 w-32 rounded-full"
           />
         </div>
+        <br></br>
+        <h2 className="mb-4 text-3xl">{user ? user.displayName : 'User'}</h2>
+        <p>{user ? user.email : 'Loading...'}</p>
       </div>
 
       <div className="p-8">
@@ -338,22 +363,24 @@ function Home() {
                     onClick={() => removePonto(index)}
                     className="rounded bg-red-500 px-4 py-2 text-white"
                   >
-                    Remover
+                    <Trash2 className="h-5 w-5" />
                   </button>
                 </div>
               ))}
-              <button
-                onClick={addPonto}
-                className="mt-2 rounded bg-green-500 px-4 py-2 text-white"
-              >
-                Adicionar Ponto
-              </button>
-              <button
-                onClick={handleSave}
-                className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
-              >
-                {editingIndex !== null ? 'Atualizar' : 'Salvar'}
-              </button>
+              <div className="space-x-4">
+                <button
+                  onClick={addPonto}
+                  className="g-4 rounded bg-green-500 px-4 py-2 text-white"
+                >
+                  Adicionar Ponto
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="rounded bg-blue-500 px-4 py-2 text-white"
+                >
+                  {editingIndex !== null ? 'Atualizar' : 'Salvar'}
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -371,18 +398,40 @@ function Home() {
                       <br />
                       <strong>Faculdade:</strong> {data.faculdade} <br />
                     </div>
+
                     <div className="flex gap-4">
+                      <button
+                        onClick={() =>
+                          index > 0 && handleReorder(index, index - 1)
+                        }
+                        className="rounded bg-blue-500 px-4 py-2 text-white"
+                        disabled={index === 0}
+                      >
+                        <ChevronUp className="h-5 w-5" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          index < areasData[selectedProcesso].length - 1 &&
+                          handleReorder(index, index + 1)
+                        }
+                        className="rounded bg-green-500 px-4 py-2 text-white"
+                        disabled={
+                          index === areasData[selectedProcesso].length - 1
+                        }
+                      >
+                        <ChevronDown className="h-5 w-5" />
+                      </button>
                       <button
                         onClick={() => handleEdit(index)}
                         className="rounded bg-yellow-500 px-4 py-2 text-white"
                       >
-                        Editar
+                        <Pencil className="h-5 w-5" />
                       </button>
                       <button
                         onClick={() => handleRemove(index)}
                         className="rounded bg-red-500 px-4 py-2 text-white"
                       >
-                        Remover
+                        <Trash2 className="h-5 w-5" />
                       </button>
                     </div>
                   </div>
