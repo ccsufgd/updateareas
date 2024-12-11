@@ -245,14 +245,14 @@ function Home() {
       </div>
 
       <div className="p-8">
-        <h1 className="mb-6 text-2xl font-bold">
+        <h1 className="mb-6 text-center text-2xl font-bold">
           Gerenciador de Areas do PSPPS
         </h1>
 
         {/* Processo */}
-        <div className="mb-6">
+        <div className="mb-6 text-center">
           <h3 className="mb-2 font-semibold">Selecione ou Crie um Processo</h3>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-center gap-4">
             <select
               value={selectedProcesso}
               onChange={(e) => setSelectedProcesso(e.target.value)}
@@ -285,7 +285,7 @@ function Home() {
                   onClick={handleUtilizar}
                   className="rounded bg-green-500 p-2 text-white hover:bg-green-800"
                 >
-                  UTILIZAR
+                  Atualizar na Página
                 </button>
               </div>
             )}
@@ -300,7 +300,7 @@ function Home() {
 
         {/* Contador de Áreas */}
         {selectedProcesso && (
-          <div className="mb-6">
+          <div className="mb-6 text-center">
             <p>
               <strong>Contagem de Áreas:</strong> {areasCount}
             </p>
