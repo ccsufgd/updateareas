@@ -235,7 +235,7 @@ function Home() {
       <div className="text-center">
         <h2 className="mb-4 text-3xl">{user ? user.displayName : 'User'}</h2>
         <p>Email: {user ? user.email : 'Loading...'}</p>
-        <div className="mt-4 flex items-center justify-center">
+        <div className="mt-4 flex justify-center">
           <img
             src={user ? user.photoURL : ''}
             alt="Profile"
@@ -252,7 +252,7 @@ function Home() {
         {/* Processo */}
         <div className="mb-6 text-center">
           <h3 className="mb-2 font-semibold">Selecione ou Crie um Processo</h3>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <select
               value={selectedProcesso}
               onChange={(e) => setSelectedProcesso(e.target.value)}
