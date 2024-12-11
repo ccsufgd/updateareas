@@ -237,7 +237,6 @@ function Home() {
         ...prevData,
         [selectedProcesso]: updatedAreas,
       }));
-      alert('Ordem atualizada com sucesso!');
     } catch (error) {
       console.error('Erro ao atualizar ordem:', error);
       alert('Erro ao atualizar ordem!');
@@ -368,18 +367,20 @@ function Home() {
                   </button>
                 </div>
               ))}
-              <button
-                onClick={addPonto}
-                className="mt-2 rounded bg-green-500 px-4 py-2 text-white"
-              >
-                Adicionar Ponto
-              </button>
-              <button
-                onClick={handleSave}
-                className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
-              >
-                {editingIndex !== null ? 'Atualizar' : 'Salvar'}
-              </button>
+              <div className="space-x-4">
+                <button
+                  onClick={addPonto}
+                  className="g-4 rounded bg-green-500 px-4 py-2 text-white"
+                >
+                  Adicionar Ponto
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="rounded bg-blue-500 px-4 py-2 text-white"
+                >
+                  {editingIndex !== null ? 'Atualizar' : 'Salvar'}
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -403,7 +404,7 @@ function Home() {
                         onClick={() =>
                           index > 0 && handleReorder(index, index - 1)
                         }
-                        className="rounded bg-blue-500 px-4 py-2 text-white"
+                        className={`rounded px-4 py-2 text-white ${index === 0 ? 'cursor-not-allowed bg-gray-500' : 'bg-blue-500'}`}
                         disabled={index === 0}
                       >
                         <ChevronUp className="h-5 w-5" />
@@ -413,7 +414,11 @@ function Home() {
                           index < areasData[selectedProcesso].length - 1 &&
                           handleReorder(index, index + 1)
                         }
-                        className="rounded bg-green-500 px-4 py-2 text-white"
+                        className={`rounded px-4 py-2 text-white ${
+                          index === areasData[selectedProcesso].length - 1
+                            ? 'cursor-not-allowed bg-gray-500'
+                            : 'bg-green-500'
+                        }`}
                         disabled={
                           index === areasData[selectedProcesso].length - 1
                         }
