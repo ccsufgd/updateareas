@@ -19,16 +19,40 @@ function Home() {
   const navigate = useNavigate();
   const auth = getAuth();
 
+  //const authorizedUids = ['QMe3niRqoBV4Sltqb1Rauc2xdge2', 'UidExample2', 'UidExample3']; // Substitua pelos UIDs autorizados
+
+  const authorizedUid = process.env.REACT_APP_UID; // Carrega o UID autorizado da variável de ambiente
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        navigate('/login'); // Redirect to login if user is not authenticated
+        navigate('/login'); // Redireciona para login se não estiver autenticado
       } else {
-        setUser(user);
+        if (user.uid !== authorizedUid) {
+          navigate('/unauthorized'); // Redireciona para página de acesso não autorizado
+        } else {
+          setUser(user); // Usuário autorizado, exibe a home
+        }
       }
     });
 
-    return unsubscribe; // Cleanup on unmount
+    return unsubscribe; // Limpeza ao desmontar
+  }, [auth, navigate]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        navigate('/login'); // Redireciona para login se não estiver autenticado
+      } else {
+        if (user.uid !== authorizedUid) {
+          navigate('/unauthorized'); // Redireciona para página de acesso não autorizado
+        } else {
+          setUser(user); // Usuário autorizado, exibe a home
+        }
+      }
+    });
+
+    return unsubscribe; // Limpeza ao desmontar
   }, [auth, navigate]);
 
   const handleLogout = () => {
@@ -209,25 +233,20 @@ function Home() {
   return (
     <div>
       <div className="text-center">
-        <h2 className="mb-4 text-3xl">
-          Welcome, {user ? user.displayName : 'User'}
-        </h2>
+        <h2 className="mb-4 text-3xl">{user ? user.displayName : 'User'}</h2>
         <p>Email: {user ? user.email : 'Loading...'}</p>
-        <img
-          src={user ? user.photoURL : ''}
-          alt="Profile"
-          className="mt-4 h-32 w-32 rounded-full"
-        />
+        <div className="mt-4 flex items-center justify-center">
+          <img
+            src={user ? user.photoURL : ''}
+            alt="Profile"
+            className="mt-4 h-32 w-32 rounded-full"
+          />
+        </div>
       </div>
-      <button
-        onClick={handleLogout}
-        className="mt-4 rounded bg-red-500 p-2 text-white hover:bg-red-600"
-      >
-        Logout
-      </button>
+
       <div className="p-8">
         <h1 className="mb-6 text-2xl font-bold">
-          Gerenciador de Áreas por Processo
+          Gerenciador de Areas do PSPPS
         </h1>
 
         {/* Processo */}
@@ -259,20 +278,25 @@ function Home() {
             >
               Criar Processo
             </button>
-          </div>
-        </div>
-
-        {/* Botão "UTILIZAR" */}
-        {selectedProcesso && (
-          <div className="mb-6">
+            {/* Botão "UTILIZAR" */}
+            {selectedProcesso && (
+              <div className="">
+                <button
+                  onClick={handleUtilizar}
+                  className="rounded bg-green-500 p-2 text-white hover:bg-green-800"
+                >
+                  UTILIZAR
+                </button>
+              </div>
+            )}
             <button
-              onClick={handleUtilizar}
-              className="rounded bg-green-500 px-4 py-2 text-white"
+              onClick={handleLogout}
+              className="rounded bg-red-500 p-2 text-white hover:bg-red-600"
             >
-              UTILIZAR
+              Logout
             </button>
           </div>
-        )}
+        </div>
 
         {/* Contador de Áreas */}
         {selectedProcesso && (
